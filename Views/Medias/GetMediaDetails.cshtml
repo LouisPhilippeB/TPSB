@@ -1,0 +1,44 @@
+@model Models.Media
+@using DAL
+@using Models
+
+@{
+    Models.User owner = DB.Users.Get(Model.OwnerId);
+    string avatar = owner != null ? owner.Avatar : "/App_Assets/Users/no_avatar.png";
+    string ownerName = owner != null ? owner.Name : "";
+    bool isOwner = Models.User.ConnectedUser != null && Models.User.ConnectedUser.Id == Model.OwnerId;
+}
+
+<div class="detailsPanel">
+    <dl>
+        <dd style="font-size:1.3em; font-weight:bold;">
+            @Model.Title
+            @if (isOwner && Model.Shared)
+            {
+                <span>[Partag&eacute;]</span>
+            }
+        </dd>
+        <dd style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <img src="@avatar" style="width:40px; height:40px; border-radius:50%; object-fit:cover;" />
+            <span>@ownerName</span>
+        </dd>
+        <dd>
+            @Helper.YoutubePlayer(Model.YoutubeId)
+        </dd>
+        <dd class="description">
+            @Model.Description
+        </dd>
+        <dt>
+            Catégorie
+        </dt>
+        <dd>
+            @Model.Category
+        </dd>
+        <dt>
+            Date de publication
+        </dt>
+        <dd>
+            @Helper.When(Model.PublishDate)
+        </dd>
+    </dl>
+</div>

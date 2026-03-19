@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.PageTitle = "Détails";
+}
+
+<div id="MediaDetailsPanel" class="detailsPanel">
+</div>
+
+@section Scripts {
+    <script>$(() => {
+            new AutoRefreshedPanel(
+                "MediaDetailsPanel",
+                "/Medias/GetMediaDetails",
+                5
+            );
+        });</script>
+}

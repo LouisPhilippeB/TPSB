@@ -1,0 +1,28 @@
+﻿@using DAL
+@using Models
+@{
+    Models.User connectedUser = Models.User.ConnectedUser;
+    List<string> categories = new List<string>();
+
+    if (connectedUser != null)
+    {
+        foreach (Media media in DB.Medias.ToList().Where(m => m.Shared || m.OwnerId == connectedUser.Id).OrderBy(m => m.Category))
+        {
+            if (categories.IndexOf(media.Category) == -1)
+            {
+                categories.Add(media.Category);
+            }
+        }
+    }
+
+    string selectedCategory = (string)Session["SelectedCategory"];
+}
+
+<select id="categorySelect" class="form-control">
+    <option value="" selected>Toutes les catégories</option>
+    @foreach (var category in categories)
+    {
+        string selected = selectedCategory == category ? "selected" : "";
+        <option value="@category" @selected>@category</option>
+    }
+</select>
